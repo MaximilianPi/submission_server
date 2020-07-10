@@ -1,0 +1,10 @@
+<!doctype html>
+<title>Your Results</title>
+<h1>Your Results: </h1>
+<p>Your Submission ID: {{ filename }}</p>
+<p>Accuracy: {{ acc }}</p>
+
+{% for table in tables %}
+            {{titles[loop.index]}}
+            {{ table|safe }}
+{% endfor %}
