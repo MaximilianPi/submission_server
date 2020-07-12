@@ -4,7 +4,7 @@ import pandas as pd
 import uuid
 import binascii
 from sklearn.metrics import accuracy_score, precision_score
-from flask import Flask, request, redirect, url_for, flash, render_template
+from flask import Flask, request, redirect, url_for, flash, render_template, send_file
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = '/uploads/'
@@ -39,6 +39,12 @@ def get_results(project):
 def index():
     if request.method == 'POST':
       #  if method.validate_on_submit():
+            if request.form["projekt"] == "FlowerDownload":
+                return redirect(url_for("download_flower"))
+            
+            if request.form["projekt"] == "DatasetsDownload":
+                return redirect(url_for("download_datasets"))
+
             if request.form['projekt'] == "Results":
                 return redirect(url_for('show_Results'))
             else:
@@ -53,9 +59,24 @@ def index():
     <input type="submit" name="projekt" value="Wine">
     <input type="submit" name="projekt" value="Flower">
     <input type="submit" name="projekt" value="Results">
+    </pr>
+    <br>
+    <br>
+    <h1>Datasets </h1>
+    <p>
+    <input type="submit" name="projekt" value="DatasetsDownload">
+    <input type="submit" name="projekt" value="FlowerDownload">
     </p>
     </form>
     '''
+@app.route("/FlowerDownload/", methods=['GET', 'POST'])
+def download_flower():
+    return send_file("flower.zip",attachment_filename ="flower.zip", as_attachment=True)
+
+@app.route("/DatasetsDownload/", methods=['GET', 'POST'])
+def download_datasets():
+    return send_file("datasets.RData",attachment_filename ="datasets.RData", as_attachment=True)
+
 
 @app.route("/show_Results/")
 def show_Results():
