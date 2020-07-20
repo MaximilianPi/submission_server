@@ -83,7 +83,7 @@ def show_Results():
     titanic =  get_results("titanic").iloc[0:30]
     nasa = get_results("nasa").iloc[0:30]
     wine = get_results("wine").iloc[0:30]
-    flower = get_results("wine").iloc[0:30]
+    flower = get_results("flower").iloc[0:30]
 
     return render_template('show_Results.html', 
                             tables0=[titanic.to_html(classes='data', index = False)], titles0=titanic.columns.values,
