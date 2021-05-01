@@ -91,7 +91,7 @@ def show_Results():
                             tables1=[nasa.to_html(classes='data', index = False)], titles1=nasa.columns.values,
                             tables2=[wine.to_html(classes='data', index = False)], titles2=wine.columns.values,
                             tables3=[flower.to_html(classes='data', index = False)], titles3=flower.columns.values,
-                            tables4=[plants.to_html(classes='data', index = False)], titles3=flower.columns.values
+                            tables4=[plants.to_html(classes='data', index = False)], titles4=plants.columns.values
                             )
 
 
