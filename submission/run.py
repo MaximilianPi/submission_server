@@ -58,6 +58,7 @@ def index():
     <input type="submit" name="projekt" value="Nasa">
     <input type="submit" name="projekt" value="Wine">
     <input type="submit" name="projekt" value="Flower">
+    <input type="submit" name="projekt" value="Plants">
     <input type="submit" name="projekt" value="Results">
     </pr>
     <br>
@@ -89,7 +90,8 @@ def show_Results():
                             tables0=[titanic.to_html(classes='data', index = False)], titles0=titanic.columns.values,
                             tables1=[nasa.to_html(classes='data', index = False)], titles1=nasa.columns.values,
                             tables2=[wine.to_html(classes='data', index = False)], titles2=wine.columns.values,
-                            tables3=[flower.to_html(classes='data', index = False)], titles3=flower.columns.values
+                            tables3=[flower.to_html(classes='data', index = False)], titles3=flower.columns.values,
+                            tables4=[plants.to_html(classes='data', index = False)], titles3=flower.columns.values
                             )
 
 
@@ -117,6 +119,9 @@ def upload(project):
 
             if project == "Flower":
                 true = pd.read_csv("true/flower.csv",index_col = 0)
+
+            if project == "Plants":
+                true = pd.read_csv("true/plants.csv",index_col = 0)
 
             pred = pd.read_csv(file, index_col = 0)
             if true.shape[0] != pred.shape[0]:
