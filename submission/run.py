@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import uuid
 import binascii
-from sklearn.metrics import accuracy_score, precision_score
+from sklearn.metrics import accuracy_score, roc_auc_score
 from flask import Flask, request, redirect, url_for, flash, render_template, send_file
 from werkzeug.utils import secure_filename
 
@@ -27,10 +27,11 @@ def get_results(project):
         df = pd.read_csv("results/"+project.lower()+"/"+filename, index_col=0, header=0)
         li.append(df)
     res_df = pd.concat(li, axis=0, ignore_index=True, sort = False)
-    #if project != "project5":
-    #    res_df.sort_values(by = ["precision"], inplace = True, ascending=False)
-    #else:
-    res_df.sort_values(by = ["accuracy"], inplace = True, ascending=False)
+
+    if project in ["titanic", "nasa", "plants"]:
+        res_df.sort_values(by = ["AUC"], inplace = True, ascending=False)
+    else:
+        res_df.sort_values(by = ["accuracy"], inplace = True, ascending=False)
 
     return res_df
 
@@ -117,10 +118,8 @@ def upload(project):
                 true = pd.read_csv("true/nasa.csv",index_col = 0)
             if project == "Wine":
                 true = pd.read_csv("true/wine.csv",index_col = 0)
-
             if project == "Flower":
                 true = pd.read_csv("true/flower.csv",index_col = 0)
-
             if project == "Plants":
                 true = pd.read_csv("true/plants.csv",index_col = 0)
 
@@ -131,11 +130,13 @@ def upload(project):
             if project in ["Titanic", "Nasa", "Plants"]:
                 if pred.iloc[:,0].unique().shape[0] > 2:
                     return redirect(url_for('error'))
-            acc = accuracy_score(true.iloc[:,0].values.astype(int), pred.iloc[:,0].values.astype(int))
-            #prec = precision_score(true.iloc[:,0].values.astype(int), pred.iloc[:,0].values.astype(int))
-            result = pd.DataFrame(data = {"id": filename, "accuracy": acc}, index = [0])
+                acc = roc_auc_score(true.iloc[:,0].values.astype(int), pred.iloc[:,0].values )
+                result = pd.DataFrame(data = {"id": filename, "AUC": acc}, index = [0])
+            else:
+                acc = accuracy_score(true.iloc[:,0].values.astype(int), pred.iloc[:,0].values.astype(int))
+                result = pd.DataFrame(data = {"id": filename, "accuracy": acc}, index = [0])
+            
             result.to_csv("results/"+project.lower()+"/"+filename)
-
             res_df = get_results(project)
             #file.save(os.path.join(app.config['UPLOAD_FOLDER'],"project3", filename))
             return render_template('result.html',
