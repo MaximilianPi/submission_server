@@ -128,7 +128,7 @@ def upload(project):
             if true.shape[0] != pred.shape[0]:
                 return redirect(url_for('error'))
 
-            if project in ["Titanic", "Nasa"]:
+            if project in ["Titanic", "Nasa", "Plants"]:
                 if pred.iloc[:,0].unique().shape[0] > 2:
                     return redirect(url_for('error'))
             acc = accuracy_score(true.iloc[:,0].values.astype(int), pred.iloc[:,0].values.astype(int))
