@@ -28,7 +28,7 @@ def get_results(project):
         li.append(df)
     res_df = pd.concat(li, axis=0, ignore_index=True, sort = False)
 
-    if project in ["titanic", "nasa", "plants"]:
+    if project.lower() in ["titanic", "nasa", "plants"]:
         res_df.sort_values(by = ["AUC"], inplace = True, ascending=False)
     else:
         res_df.sort_values(by = ["accuracy"], inplace = True, ascending=False)
@@ -129,6 +129,7 @@ def upload(project):
 
             if project in ["Titanic", "Nasa", "Plants"]:
                 acc = roc_auc_score(true.iloc[:,0].values.astype(int), pred.iloc[:,0].values )
+                print(acc)
                 result = pd.DataFrame(data = {"id": filename, "AUC": acc}, index = [0])
             else:
                 acc = accuracy_score(true.iloc[:,0].values.astype(int), pred.iloc[:,0].values.astype(int))
